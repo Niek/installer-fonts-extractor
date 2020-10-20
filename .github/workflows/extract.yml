@@ -15,14 +15,15 @@ jobs:
       - name: Fetch Windows 10 ISO
         run: |
           LINK=$(node link.js)
-          curl -S "${LINK}" -o win10.iso
+          echo "Downloading Windows 10 ISO from link: ${LINK}"
+          curl -s "${LINK}" -o win10.iso
           ls -lha win10.iso
       - name: Extract fonts
         run: |
           mkdir mount
-          mount -oloop win10.iso mount
+          sudo mount win10.iso mount -o loop
           wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts
-          umount mount
+          sudo umount mount
       - name: Upload fonts artifact
         uses: actions/upload-artifact@v2
         with:
