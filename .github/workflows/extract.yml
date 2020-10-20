@@ -11,7 +11,7 @@ jobs:
         run: |
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
           sudo apt-get install -y nodejs wimtools curl
-          PLAYWRIGHT_BROWSERS_PATH=0 npm i playwright-chromium
+          npm i playwright-chromium
       - name: Fetch Windows 10 ISO
         run: |
           LINK=$(node link.js)
@@ -30,4 +30,4 @@ jobs:
           path: fonts/
       - name: Clean up
         run: |
-          rm -rf node_modules/ win10.iso fonts/
+          rm -rf node_modules/ win10.iso fonts/ mount/
