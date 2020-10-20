@@ -1,0 +1,31 @@
+name: Extract Windows fonts
+on: [push, pull_request]
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs wimtools curl
+          PLAYWRIGHT_BROWSERS_PATH=0 npm i playwright-chromium
+      - name: Fetch Windows 10 ISO
+        run: |
+          LINK=$(node link.js)
+          curl -S "${LINK}" -o win10.iso
+          ls -lha win10.iso
+      - name: Extract fonts
+        run: |
+          mkdir mount
+          mount -oloop win10.iso mount
+          wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts
+          umount mount
+      - name: Upload fonts artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: fonts
+          path: fonts/
+      - name: Clean up
+        run: |
+          rm -rf node_modules/ win10.iso fonts/
