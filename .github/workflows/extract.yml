@@ -10,25 +10,35 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-          sudo apt-get install -y nodejs wimtools curl
+          sudo apt-get install -y nodejs wimtools curl p7zip-full python
           npm i playwright-chromium
-      - name: Fetch Windows 10 ISO
+      - name: Fetch Windows ISO
         run: |
           LINK=$(node link.js)
           echo "Downloading Windows 10 ISO from link: ${LINK}"
           curl -s "${LINK}" -o win10.iso
           ls -lha win10.iso
+      - name: Fetch macOS ISO
+        run: |
+          curl -s "https://raw.githubusercontent.com/kholia/OSX-KVM/master/fetch-macOS.py" -o fetch-macOS.py
+          python fetch-macOS.py --version 10.15.6
       - name: Extract fonts
         run: |
           mkdir mount
           sudo mount win10.iso mount -o loop
-          wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts
+          wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts-win
           sudo umount mount
-      - name: Upload fonts artifact
+          7z e BaseSystem.dmg -ofonts-mac '*.ttf' -r
+      - name: Upload Windows fonts artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Windows 10 fonts
-          path: fonts/
+          name: Windows fonts
+          path: fonts-win/
+      - name: Upload macOS fonts artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: macOS fonts
+          path: fonts-mac/
       - name: Clean up
         run: |
-          rm -rf node_modules/ win10.iso fonts/ mount/
+          rm -rf node_modules/ win10.iso BaseSystem.dmg fonts-win/ fonts-mac/ mount/
