@@ -1,4 +1,4 @@
-name: Extract Windows fonts
+name: Extract Windows and macOS fonts
 on: [push, pull_request]
 
 jobs:
