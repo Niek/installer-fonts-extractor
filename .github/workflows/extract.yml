@@ -22,10 +22,11 @@ jobs:
         run: |
           curl -s "https://raw.githubusercontent.com/kholia/OSX-KVM/master/fetch-macOS.py" -o fetch-macOS.py
           python fetch-macOS.py --version 10.15.6
+          ls -lha BaseSystem.dmg
       - name: Extract fonts
         run: |
           mkdir mount
-          sudo mount win10.iso mount -o loop
+          sudo mount win10.iso mount -o loop,ro
           wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts-win
           sudo umount mount
           7z e BaseSystem.dmg -ofonts-mac '*.ttf' -r
