@@ -49,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Extracted fonts ${{ github.ref }}
+          release_name: Extracted fonts - commit ${{ github.sha }}
       - name: Upload Windows fonts to release
         uses: actions/upload-release-asset@v1
         env:
@@ -57,7 +57,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./fonts-win.zip
-          asset_name: Windows fonts.zip
+          asset_name: Windows-fonts.zip
           asset_content_type: application/zip
       - name: Upload macOS fonts to release
         uses: actions/upload-release-asset@v1
@@ -66,7 +66,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./fonts-mac.zip
-          asset_name: macOS fonts.zip
+          asset_name: macOS-fonts.zip
           asset_content_type: application/zip
       - name: Clean up
         run: |
