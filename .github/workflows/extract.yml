@@ -21,7 +21,7 @@ jobs:
       - name: Fetch macOS ISO
         run: |
           curl -s "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py" -o macrecovery.py
-          python macrecovery download
+          python macrecovery.py download
           ls -lha BaseSystem.dmg
       - name: Extract fonts
         run: |
