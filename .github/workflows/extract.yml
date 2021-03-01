@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ github.run_number }} # create tag with incrementing number
           release_name: Extracted fonts - commit ${{ github.sha }}
       - name: Upload Windows fonts to release
         uses: actions/upload-release-asset@v1
