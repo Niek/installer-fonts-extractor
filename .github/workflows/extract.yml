@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
           sudo apt-get install -y nodejs wimtools curl p7zip-full python
           npm i playwright-chromium
       - name: Fetch Windows ISO
@@ -20,8 +20,8 @@ jobs:
           ls -lha win10.iso
       - name: Fetch macOS ISO
         run: |
-          curl -s "https://raw.githubusercontent.com/kholia/OSX-KVM/master/fetch-macOS.py" -o fetch-macOS.py
-          python fetch-macOS.py --version 10.15.6
+          curl -s "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py" -o macrecovery.py
+          python macrecovery download
           ls -lha BaseSystem.dmg
       - name: Extract fonts
         run: |
