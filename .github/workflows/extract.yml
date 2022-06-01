@@ -1,5 +1,5 @@
 name: Extract Windows and macOS fonts
-on: [push, pull_request]
+on: push
 
 jobs:
   extract-and-upload:
@@ -18,8 +18,14 @@ jobs:
         run: |
           LINK=$(node link.js win10)
           echo "Downloading Windows 10 ISO from link: ${LINK}"
-          curl -s "${LINK}" -o win10.iso
+          curl -sLf "${LINK}" -o win10.iso
           ls -lha win10.iso
+      - name: Fetch Windows 11 ISO
+        run: |
+          LINK=$(node link.js win11)
+          echo "Downloading Windows 11 ISO from link: ${LINK}"
+          curl -sLf "${LINK}" -o win11.iso
+          ls -lha win11.iso
       - name: Fetch macOS ISO
         run: |
           curl -sLf "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py" -o macrecovery.py
@@ -29,16 +35,24 @@ jobs:
         run: |
           mkdir mount
           sudo mount win10.iso mount -o loop,ro
-          wimextract mount/sources/install.wim 1 /Windows/{Fonts/"*".{ttf,ttc},System32/Licenses/neutral/"*"/"*"/license.rtf} --dest-dir fonts-win
+          wimextract mount/sources/install.wim 1 /Windows/Fonts/"*".{ttf,ttc} --dest-dir fonts-win-10
+          sudo umount mount
+          sudo mount win11.iso mount -o loop,ro
+          wimextract mount/sources/install.wim 1 /Windows/Fonts/"*".{ttf,ttc} --dest-dir fonts-win-11
           sudo umount mount
       - name: Extract macOS fonts
         run: |
-          7z e BaseSystem.dmg -ofonts-mac '*.ttf' '*.ttc' -r
-      - name: Upload Windows fonts artifact
+          7z e BaseSystem.dmg -ofonts-mac "*.ttf" "*.ttc" -r
+      - name: Upload Windows 10 fonts artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Windows fonts
-          path: fonts-win/
+          name: Windows 10 fonts
+          path: fonts-win-10/
+      - name: Upload Windows 11 fonts artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows 11 fonts
+          path: fonts-win-11/
       - name: Upload macOS fonts artifact
         uses: actions/upload-artifact@v2
         with:
@@ -49,5 +63,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            fonts-win/
+            fonts-win-10/
+            fonts-win-11/
             fonts-mac/
