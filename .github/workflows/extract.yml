@@ -6,10 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Install dependencies
         run: |
-          curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
           sudo apt-get install -y nodejs wimtools curl p7zip-full python
           npm i playwright-chromium
       - name: Fetch Windows ISO
@@ -42,6 +44,7 @@ jobs:
 #        with:
 #          name: macOS fonts
 #          path: fonts-mac/
+      # TODO: switch to https://github.com/softprops/action-gh-release
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
