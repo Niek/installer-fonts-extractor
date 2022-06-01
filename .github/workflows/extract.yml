@@ -14,9 +14,9 @@ jobs:
         run: |
           sudo apt-get install -y wimtools curl p7zip-full python
           npm i playwright-chromium
-      - name: Fetch Windows ISO
+      - name: Fetch Windows 10 ISO
         run: |
-          LINK=$(node link.js)
+          LINK=$(node link.js win10)
           echo "Downloading Windows 10 ISO from link: ${LINK}"
           curl -s "${LINK}" -o win10.iso
           ls -lha win10.iso
