@@ -20,7 +20,7 @@ const printUsage = () => {
       await (await page.$('#submit-sku')).click();
     } else if (args[0] === 'win11') {
       await page.goto('https://www.microsoft.com/software-download/windows11');
-      await page.selectOption('select#product-edition', { label: 'Windows 11 (multi-edition ISO)' } );
+      await page.selectOption('select#product-edition', { label: 'Windows 11 (multi-edition ISO for x64 devices)' } );
       await (await page.$('#submit-product-edition')).click();
       await page.selectOption('select#product-languages', { label: 'English International' } );
       await (await page.$('#submit-sku')).click();
