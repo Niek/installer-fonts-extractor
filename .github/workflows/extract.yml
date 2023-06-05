@@ -12,7 +12,7 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: |
-          sudo apt-get install -y wimtools curl p7zip-full python
+          sudo apt-get install -y wimtools curl p7zip-full
           npm i playwright-chromium
       - name: Fetch Windows 10 ISO
         run: |
