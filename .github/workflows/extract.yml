@@ -29,10 +29,9 @@ jobs:
       - name: Fetch macOS ISO
         shell: 'script -q -e -c "bash --noprofile --norc -eo pipefail {0}"'
         run: |
-          #curl -sLf "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py" -o macrecovery.py
           git clone --depth 1 https://github.com/acidanthera/OpenCorePkg.git
           cp -R OpenCorePkg/Utilities/macrecovery/* .
-          python macrecovery.py download
+          python macrecovery.py download || true # Download macOS recovery image, skip errors
           ls -lha com.apple.recovery.boot/BaseSystem.dmg
       - name: Extract Windows fonts
         run: |
