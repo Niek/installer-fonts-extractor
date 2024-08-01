@@ -31,6 +31,8 @@ jobs:
           curl -sLf "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py" -o macrecovery.py
           python macrecovery.py download
           ls -lha com.apple.recovery.boot/BaseSystem.dmg
+        env:
+          COLUMNS: 80
       - name: Extract Windows fonts
         run: |
           mkdir mount
