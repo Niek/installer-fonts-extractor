@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       - name: Install dependencies
         run: |
           sudo apt-get install -y wimtools curl p7zip-full
@@ -44,22 +44,22 @@ jobs:
         run: |
           7z e com.apple.recovery.boot/BaseSystem.dmg -ofonts-mac "*.ttf" "*.ttc" -r
       - name: Upload Windows 10 fonts artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows 10 fonts
           path: fonts-win-10/
       - name: Upload Windows 11 fonts artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows 11 fonts
           path: fonts-win-11/
       - name: Upload macOS fonts artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: macOS fonts
           path: fonts-mac/
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
