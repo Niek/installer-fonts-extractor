@@ -44,7 +44,7 @@ jobs:
           sudo umount mount
       - name: Extract macOS fonts
         run: |
-          7z e com.apple.recovery.boot/BaseSystem.dmg -ofonts-mac "*.ttf" "*.ttc" -r
+          7z e com.apple.recovery.boot/BaseSystem.dmg -ofonts-mac "*.ttf" "*.ttc" -r -y
       - name: Upload Windows 10 fonts artifact
         uses: actions/upload-artifact@v4
         with:
